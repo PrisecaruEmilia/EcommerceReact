@@ -1,9 +1,12 @@
 import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import '../../assets/admin/css/styles.css';
 import '../../assets/admin/js/scripts';
 import NavBar from './Navbar';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
+
+import routes from '../../routes/routes';
 
 const MasterLayout = () => {
   return (
@@ -14,7 +17,24 @@ const MasterLayout = () => {
           <Sidebar />
         </div>
         <div id="layoutSidenav_content">
-          <main>Master File</main>
+          <main>
+            <Switch>
+              {routes.map((route, index) => {
+                return (
+                  route.component && (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      exact={route.exact}
+                      name={route.name}
+                      render={(props) => <route.component {...props} />}
+                    />
+                  )
+                );
+              })}
+              <Redirect from="/admin" to="/admin/dashboard" />
+            </Switch>
+          </main>
           <Footer />
         </div>
       </div>
